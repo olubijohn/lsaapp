@@ -13,36 +13,54 @@ const LoginClient = () => {
 
   const handleSubmit = async (data: any) => {
     setIsLoading(true);
-    console.log("Login data:", data);
-    
-    // Simulate a successful login for the UI fix
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Login failed");
+      }
+
+      console.log("Login successful:", result);
+      // Store user data for the dashboard
+      localStorage.setItem("user", JSON.stringify(result.user));
       router.push("/dashboard/home");
-    }, 1500);
+    } catch (error: any) {
+      console.error("Login error:", error);
+      alert(error.message || "An error occurred during login");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      {isLoading && <Loader />}
-      <MobileNavbar />
-      <div className="flex-1 grid lg:grid-cols-2">
-        <div className=" p-4 h-full">
-          <MarketingPanel />
-        </div>
+    return (
+        <div className="min-h-screen flex flex-col">
+            {isLoading && <Loader />}
+            <MobileNavbar />
+            <div className="flex-1 grid lg:grid-cols-2">
+                <div className="p-4 h-full">
+                    <MarketingPanel />
+                </div>
 
-        <div className="flex flex-col items-center justify-center bg-white px-8 xl:px-32 py-12">
-          <LoginForm
-            onSubmit={handleSubmit}
-            isPending={isLoading}
-          />
-          <p className="text-center text-sm mt-8">
-            (C) 2025. LSA SCHOOL MANAGEMENT. All Rights Reserved.
-          </p>
+                <div className="flex flex-col items-center justify-center bg-white px-8 xl:px-32 py-12">
+                    <LoginForm
+                        onSubmit={handleSubmit}
+                        isPending={isLoading}
+                    />
+                    <p className="text-center text-sm mt-8">
+                        (C) 2025. LSA SCHOOL MANAGEMENT. All Rights Reserved.
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default LoginClient;

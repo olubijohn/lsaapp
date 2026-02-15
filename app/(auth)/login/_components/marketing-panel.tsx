@@ -6,7 +6,7 @@ const MarketingPanel = () => {
         <div className="hidden h-full lg:flex bg-[#0047FF] text-white flex-col justify-between p-12 rounded-3xl relative overflow-hidden">
             {/* Background pattern/gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#0047FF] via-[#0062FF] to-[#003DCB] opacity-100" />
-            <div className="absolute inset-0 bg-[url('/images/authbg.png')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-30" />
+            <div className="absolute inset-0 bg-[url('/images/authbg.png')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-100" />
             <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl animate-pulse" />
             <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
 

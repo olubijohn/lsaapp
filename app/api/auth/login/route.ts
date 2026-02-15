@@ -1,0 +1,145 @@
+import { google } from 'googleapis';
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    const { username, password } = await req.json();
+
+    if (!username || !password) {
+      return NextResponse.json(
+        { error: 'Username and password are required' },
+        { status: 400 }
+      );
+    }
+
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: process.env.GOOGLE_CLIENT_EMAIL,
+        private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      },
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+    
+    // First, let's get the spreadsheet details to find the correct tab name
+    const spreadsheet = await sheets.spreadsheets.get({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    });
+
+    const sheetTitles = spreadsheet.data.sheets?.map(s => s.properties?.title) || [];
+    console.log('Available sheet tabs:', sheetTitles);
+
+    // Try to find the best sheet: 
+    // 1. Exact match for 'cr69d_usertokens'
+    // 2. Case-insensitive match
+    // 3. Just use the first sheet if nothing else matches
+    let targetSheet = sheetTitles.find(t => t === 'cr69d_usertokens') || 
+                      sheetTitles.find(t => t?.toLowerCase() === 'cr69d_usertokens'.toLowerCase()) ||
+                      sheetTitles[0];
+
+    if (!targetSheet) {
+      return NextResponse.json(
+        { error: 'No sheets found in this spreadsheet.' },
+        { status: 500 }
+      );
+    }
+
+    console.log('Using sheet tab:', targetSheet);
+    const range = `'${targetSheet}'!A:ZZ`; // Expanded range to include AW and AY
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+      range: range,
+    });
+
+    const rows = response.data.values;
+
+    if (!rows || rows.length === 0) {
+      return NextResponse.json(
+        { error: `No data found in sheet: ${targetSheet}` },
+        { status: 500 }
+      );
+    }
+
+    // --- REFINED HEADER DISCOVERY ---
+    // Sometimes headers aren't in row 0, or have weird spacing.
+    // We search first 10 rows for our headers.
+    let usernameColIndex = -1;
+    let pinColIndex = -1;
+    let headerRowIndex = -1;
+
+    for (let i = 0; i < Math.min(rows.length, 10); i++) {
+        const currentRow = rows[i].map((h: any) => String(h || '').trim());
+        const uIdx = currentRow.indexOf('cr69d_username');
+        const pIdx = currentRow.indexOf('cr69d_pin');
+        
+        if (uIdx !== -1 && pIdx !== -1) {
+            usernameColIndex = uIdx;
+            pinColIndex = pIdx;
+            headerRowIndex = i;
+            break;
+        }
+    }
+
+    if (usernameColIndex === -1 || pinColIndex === -1) {
+      console.error('Failed to find specific headers. First row contents:', rows[0]);
+      return NextResponse.json(
+        { 
+          error: `Could not find columns 'cr69d_username' and 'cr69d_pin' in the first 10 rows.`,
+          debug_first_row: rows[0]?.slice(0, 70) // Show a slice of headers for debugging
+        },
+        { status: 500 }
+      );
+    }
+
+    console.log(`Found headers at row ${headerRowIndex}: username at col ${usernameColIndex}, pin at col ${pinColIndex}`);
+
+    // Find user (skip the header row)
+    const userRow = rows.slice(headerRowIndex + 1).find(row => {
+        const val = String(row[usernameColIndex] || '').trim();
+        return val === username;
+    });
+
+    if (!userRow) {
+      return NextResponse.json(
+        { error: 'Invalid credentials (user not found)' },
+        { status: 401 }
+      );
+    }
+
+    const storedPin = String(userRow[pinColIndex] || '').trim();
+
+    if (storedPin !== password) {
+      return NextResponse.json(
+        { error: 'Invalid credentials (pin mismatch)' },
+        { status: 401 }
+      );
+    }
+
+    // Success - return user info
+    const user: any = {
+      username: userRow[usernameColIndex],
+    };
+
+    // Try to find role and organisation
+    const currentHeaders = rows[headerRowIndex].map((h: any) => String(h || '').trim());
+    const roleColIndex = currentHeaders.indexOf('cr69d_role');
+    const orgColIndex = currentHeaders.indexOf('cr69d_organisation');
+
+    if (roleColIndex !== -1) user.role = userRow[roleColIndex];
+    if (orgColIndex !== -1) user.organisation = userRow[orgColIndex];
+
+    return NextResponse.json({
+      message: 'Login successful',
+      user,
+    });
+
+  } catch (error: any) {
+    console.error('Auth Error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error', details: error.message },
+      { status: 500 }
+    );
+  }
+}
