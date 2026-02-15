@@ -100,12 +100,12 @@ export default function StudentsPage() {
                                     <tr key={i} className="hover:bg-slate-50/50 transition-colors group">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">
-                                                    {(student.cr69d_title || student.cr69d_name || 'S').charAt(0)}
+                                                <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs uppercase">
+                                                    {(student.cr69d_title || 'S').charAt(0)}
                                                 </div>
                                                 <div>
                                                     <p className="text-sm font-bold text-slate-800">{student.cr69d_title || 'Unknown Student'}</p>
-                                                    <p className="text-[10px] text-slate-500 font-medium">{student.cr69d_email || 'No email registered'}</p>
+                                                    <p className="text-[10px] text-slate-500 font-medium">{student.cr69d_emailaddress || 'No email registered'}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -117,16 +117,16 @@ export default function StudentsPage() {
                                         <td className="px-6 py-4">
                                             <span className={cn(
                                                 "text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest",
-                                                String(student.cr69d_status).toLowerCase() === 'active' || student.cr69d_status === '1'
+                                                String(student.cr69d_studentactive).toUpperCase() === 'TRUE'
                                                     ? "bg-emerald-100 text-emerald-700"
                                                     : "bg-slate-100 text-slate-500"
                                             )}>
-                                                {student.cr69d_status || 'Inactive'}
+                                                {String(student.cr69d_studentactive).toUpperCase() === 'TRUE' ? 'Active' : 'Inactive'}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className={`text-sm font-bold ${parseFloat(String(student.cr69d_balance || '0').replace(/[^0-9.-]+/g, '')) > 0 ? 'text-orange-600' : 'text-emerald-600'}`}>
-                                                ₦{parseFloat(String(student.cr69d_balance || '0').replace(/[^0-9.-]+/g, '')).toLocaleString()}
+                                            <span className={`text-sm font-bold ${parseFloat(String(student.cr69d_wallectbalance || '0').replace(/[^0-9.-]+/g, '')) > 0 ? 'text-orange-600' : 'text-emerald-600'}`}>
+                                                ₦{parseFloat(String(student.cr69d_wallectbalance || '0').replace(/[^0-9.-]+/g, '')).toLocaleString()}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">

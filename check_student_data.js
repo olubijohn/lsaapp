@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
 dotenv.config({ path: path.join(__dirname, '.env.local') });
 
@@ -16,32 +17,32 @@ async function checkStudentHeaders() {
 
     const sheets = google.sheets({ version: 'v4', auth });
     const spreadsheetId = process.env.GOOGLE_SHEETS_ID_STUDENTS;
-    const targetSheet = 'studentt';
+    const targetSheet = 'cr69d_studentses.csv';
 
-    console.log(`Checking sheet: ${targetSheet} in spreadsheet: ${spreadsheetId}`);
-    
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
       range: `'${targetSheet}'!1:1`,
     });
 
     const headers = response.data.values?.[0] || [];
-    console.log('\n--- HEADERS FOUND ---');
-    console.log(JSON.stringify(headers, null, 2));
-    
-    // Sample data
+
     const sampleResponse = await sheets.spreadsheets.values.get({
         spreadsheetId,
         range: `'${targetSheet}'!2:4`,
     });
-    console.log('\n--- SAMPLE DATA (Rows 2-4) ---');
-    console.log(JSON.stringify(sampleResponse.data.values, null, 2));
+
+    const result = {
+        spreadsheetId,
+        targetSheet,
+        headers,
+        sampleData: sampleResponse.data.values
+    };
+    
+    fs.writeFileSync('student_data_diagnostic.json', JSON.stringify(result, null, 2));
+    console.log('Diagnostic results saved to student_data_diagnostic.json');
 
   } catch (error) {
     console.error('Error:', error.message);
-    if (error.response?.data) {
-        console.error('Full Error Details:', JSON.stringify(error.response.data, null, 2));
-    }
   }
 }
 

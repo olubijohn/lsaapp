@@ -6,10 +6,6 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const org = searchParams.get('org');
 
-    if (!org) {
-      return NextResponse.json({ error: 'Organisation is required' }, { status: 400 });
-    }
-
     const auth = new google.auth.GoogleAuth({
       credentials: {
         client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -33,19 +29,16 @@ export async function GET(req: Request) {
     }
 
     const headers = rows[0].map((h: any) => String(h || '').trim());
-    const orgCol = headers.indexOf('cr69d_organisation');
 
-    const students = rows.slice(1)
-        .filter(row => String(row[orgCol] || '').trim().toLowerCase() === org.toLowerCase())
-        .map(row => {
-            const student: any = {};
-            headers.forEach((header, index) => {
-                if (header) {
-                    student[header] = row[index];
-                }
-            });
-            return student;
+    const students = rows.slice(1).map(row => {
+        const student: any = {};
+        headers.forEach((header, index) => {
+            if (header) {
+                student[header] = row[index];
+            }
         });
+        return student;
+    });
 
     return NextResponse.json({ students });
 
