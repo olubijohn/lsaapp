@@ -13,9 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nova LSA - Sign In | Financial Management Simplified",
+  title: "Nova LSA | Financial Management Simplified",
   description:
     "Access your Nova (LSA) dashboard for comprehensive financial management solutions for educational institutions.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
