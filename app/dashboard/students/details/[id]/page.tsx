@@ -159,7 +159,7 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
 
                     <div className="flex gap-12 text-slate-400">
                         <div className="text-center">
-                            <p className="text-[10px] font-black uppercase tracking-widest mb-1">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '20' })} 08:40 PM</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest mb-1">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })} 08:40 PM</p>
                             <div className="flex items-center justify-center gap-1 text-slate-900">
                                 <span className="font-extrabold text-lg">₦{Math.abs(balance).toLocaleString()}</span>
                                 <ArrowUpRight className="w-4 h-4 text-emerald-500" />
