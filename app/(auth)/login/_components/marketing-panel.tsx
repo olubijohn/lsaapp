@@ -1,5 +1,5 @@
-import Logo from "@/components/ui/logo";
 import TestimonialSlider from "./testimonial-slider";
+import NovaLogo from "@/components/ui/nova-logo";
 
 const MarketingPanel = () => {
     return (
@@ -11,10 +11,9 @@ const MarketingPanel = () => {
             <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
 
             <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-10">
-                    <Logo width={160} height={45} className="drop-shadow-sm" />
+                <div className="flex justify-start mb-12">
+                    <NovaLogo size="lg" className="items-start" />
                 </div>
-
                 <div className="space-y-6 max-w-xl">
                     <h2 className="text-4xl xl:text-5xl font-extrabold leading-[1.15] tracking-tight">
                         Simplifying management for <span className="text-blue-200">schools</span>, educators, and administrators.

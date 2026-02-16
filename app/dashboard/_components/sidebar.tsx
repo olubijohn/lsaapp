@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import NovaLogo from "@/components/ui/nova-logo";
 
 const menuGroups = [
   {
@@ -102,15 +103,14 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
         isCollapsed ? "justify-center" : "justify-between"
       )}>
         <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[var(--primary)] rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
-            <School className="text-white w-6 h-6" />
-            </div>
-            {!isCollapsed && (
-              <div className="animate-in fade-in slide-in-from-left-4 duration-300">
-                <h1 className="text-white font-bold text-lg tracking-tight">LSA SCHOOL</h1>
-                <p className="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Management</p>
-              </div>
-            )}
+            <NovaLogo 
+              size="sm" 
+              onlyBadge={isCollapsed}
+              className={cn(
+                "transition-all duration-300",
+                isCollapsed ? "items-center" : "items-start"
+              )} 
+            />
         </div>
         <button 
           onClick={onClose}
