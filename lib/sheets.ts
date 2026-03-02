@@ -6,7 +6,7 @@ interface CacheEntry {
     timestamp: number;
 }
 
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 1000; // 1 second for active debugging
 
 // Persist cache across HMR reloads in development
 const globalForSheets = global as unknown as {

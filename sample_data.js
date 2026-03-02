@@ -23,23 +23,31 @@ async function sampleData() {
     });
 
     const sheets = google.sheets({ version: 'v4', auth });
-    const spreadsheetId = process.env.GOOGLE_SHEETS_ID_STUDENTS;
-    const targetSheet = 'cr69d_studentses.csv';
+    const spreadsheetId = process.env.GOOGLE_SHEETS_ID_AUTH;
+    const targetSheet = 'cr69d_usertokens.csv';
 
-    console.log('Fetching data from sheet...');
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: `'${targetSheet}'!A1:ZZ10`,
+      range: `'${targetSheet}'!A1:ZZ100`,
     });
 
     const rows = response.data.values;
-    if (!rows || rows.length === 0) {
-      console.log('No data found in sheet.');
-      return;
+    const headers = rows[0].map(h => String(h || '').trim().toLowerCase());
+    const usernameIndex = headers.indexOf('cr69d_username');
+    const instuIndex = headers.indexOf('cr69d_instucode');
+    const orgIndex = headers.indexOf('cr69d_organisation');
+    
+    console.log('--- USER t SEARCH ---');
+    const userT = rows.slice(1).find(row => String(row[usernameIndex] || '').trim().toLowerCase() === 't');
+    
+    if (userT) {
+        console.log(`Username: ${userT[usernameIndex]}`);
+        console.log(`InstuCode: "${userT[instuIndex]}" (type: ${typeof userT[instuIndex]})`);
+        console.log(`Organisation: "${userT[orgIndex]}"`);
+    } else {
+        console.log('User "t" not found.');
     }
-
-    const headers = rows[0].map(h => String(h || '').trim());
-    console.log('Headers found:', headers.length);
+    console.log('----------------------');
 
     const instuCol = headers.indexOf('cr69d_instucode');
     const levelCol = headers.indexOf('cr69d_level');

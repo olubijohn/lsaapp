@@ -24,6 +24,12 @@ export async function GET(req: Request) {
         return student;
     });
 
+    console.log(`[Students API] Filtering for org: "${org}", instuCol index: ${instuCol}`);
+
+    if (instuCol === -1) {
+        console.error('[Students API] Organisation column (cr69d_instucode) not found in headers:', headers);
+    }
+
     // FILTER BY ORGANIZATION (instuCode) if provided
     if (org && instuCol !== -1) {
         students = students.filter(s => String(s.cr69d_instucode || '').trim() === org);

@@ -38,9 +38,16 @@ export async function GET(req: Request) {
     // FILTER BY INSTUCODE
     const students = allStudents.filter(row => {
         const studentOrg = String(row[instuCol] || '').trim();
-        return studentOrg === org;
+        const matchesString = studentOrg === org || studentOrg.toLowerCase() === String(org).toLowerCase();
+        
+        // Numeric fallback: handles "5" vs 5 or "05" vs "5"
+        const matchesNumeric = !isNaN(Number(studentOrg)) && !isNaN(Number(org)) && Number(studentOrg) === Number(org);
+        
+        return matchesString || matchesNumeric;
     });
 
+    console.log(`[Stats API] Found ${students.length} students for org: "${org}" (Numeric/String match allowed)`);
+    
     // Aggregation logic
     const totalStudents = students.length;
     let activeStudentsCount = 0;
@@ -128,7 +135,14 @@ export async function GET(req: Request) {
         busSubscribers,
         smsSubscribers,
         incompleteProfiles: totalStudents - Math.min(whatsappCount, emailCount),
-        levels: levels.slice(0, 10) // Top 10 levels
+        levels: levels.slice(0, 10), // Top 10 levels
+        debug: {
+            queriedOrg: org,
+            instuColIndex: instuCol,
+            totalRowsFound: allStudents.length,
+            firstFiveInstuCodes: allStudents.slice(0, 5).map(r => String(r[instuCol] || '').trim()),
+            matchesFound: students.length
+        }
     };
 
     return NextResponse.json(stats);
