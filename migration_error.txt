@@ -1,0 +1,116 @@
+﻿node.exe : C:\Users\pe
+ter\OneDrive\Desktop\U
+MUSA DIGITAL\LSA\lsaap
+p\node_modules\.pnpm\@
+prisma+client@7.4.2_pr
+isma_6e3ba3dfe5bf958e0
+6a14e126c070379\node_m
+odules\@prisma\client\
+src\runtime\utils\vali
+datePrismaClientOption
+s.ts:229
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\U
+sers\peter\AppData\Roa
+ming\ ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (C:\Users\p   
+ eter\...tOptions.    
+ts:229:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+    throw new PrismaCl
+ientConstructorValidat
+ionError(
+          ^
+
+PrismaClientConstructo
+rValidationError: 
+Using engine type 
+"client" requires 
+either "adapter" or 
+"accelerateUrl" to be 
+provided to 
+PrismaClient 
+constructor.
+Read more at https://p
+ris.ly/d/client-constr
+uctor
+    at validateDepende
+ntOptions (C:\Users\pe
+ter\OneDrive\Desktop\U
+MUSA DIGITAL\LSA\lsaap
+p\node_modules\.pnpm\@
+prisma+client@7.4.2_pr
+isma_6e3ba3dfe5bf958e0
+6a14e126c070379\node_m
+odules\@prisma\client\
+src\runtime\utils\vali
+datePrismaClientOption
+s.ts:229:11)
+    at validatePrismaC
+lientOptions (C:\Users
+\peter\OneDrive\Deskto
+p\UMUSA DIGITAL\LSA\ls
+aapp\node_modules\.pnp
+m\@prisma+client@7.4.2
+_prisma_6e3ba3dfe5bf95
+8e06a14e126c070379\nod
+e_modules\@prisma\clie
+nt\src\runtime\utils\v
+alidatePrismaClientOpt
+ions.ts:246:3)
+    at new t (C:\Users
+\peter\OneDrive\Deskto
+p\UMUSA DIGITAL\LSA\ls
+aapp\node_modules\.pnp
+m\@prisma+client@7.4.2
+_prisma_6e3ba3dfe5bf95
+8e06a14e126c070379\nod
+e_modules\@prisma\clie
+nt\src\runtime\getPris
+maClient.ts:282:7)
+    at <anonymous> (C:
+\Users\peter\OneDrive\
+Desktop\UMUSA DIGITAL\
+LSA\lsaapp\lib\db.ts:7
+:3)
+    at 
+Object.<anonymous> (C:
+\Users\peter\OneDrive\
+Desktop\UMUSA DIGITAL\
+LSA\lsaapp\lib\db.ts:1
+1:69)
+    at 
+Module._compile (node:
+internal/modules/cjs/l
+oader:1812:14)
+    at 
+Object.transformer (C:
+\Users\peter\OneDrive\
+Desktop\UMUSA DIGITAL\
+LSA\lsaapp\node_module
+s\.pnpm\tsx@4.21.0\nod
+e_modules\tsx\dist\reg
+ister-D46fvsV_.cjs:3:1
+104)
+    at Module.load (no
+de:internal/modules/cj
+s/loader:1533:32)
+    at Module._load (n
+ode:internal/modules/c
+js/loader:1335:12)
+    at wrapModuleLoad 
+(node:internal/modules
+/cjs/loader:255:19)
+
+Node.js v24.14.0

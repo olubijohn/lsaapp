@@ -5,6 +5,7 @@ import path from 'path';
 
 // Load env from root
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 async function migrate() {
     console.log('🚀 Starting Data Migration: Google Sheets -> Supabase');
@@ -29,7 +30,7 @@ async function migrate() {
 
             // Prepare for Prisma
             return {
-                cr69d_studentid: String(student.cr69d_studentid || '').trim(),
+                cr69d_studentid: String(student.cr69d_student_id || '').trim(),
                 cr69d_title: student.cr69d_title,
                 cr69d_gender: student.cr69d_gender,
                 cr69d_level: student.cr69d_level,
@@ -55,9 +56,15 @@ async function migrate() {
             };
         }).filter(s => s.cr69d_studentid);
 
+        console.log(`⚡ Prepared ${studentsToInsert.length} students for insertion.`);
+        if (studentsToInsert.length > 0) {
+            console.log('Sample student ID:', studentsToInsert[0].cr69d_studentid);
+        }
+
         console.log('⚡ Upserting to Supabase...');
         
         let successCount = 0;
+        console.log('Looping through students...');
         for (const scholar of studentsToInsert) {
             try {
                 await prisma.student.upsert({

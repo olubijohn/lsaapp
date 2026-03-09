@@ -1,0 +1,446 @@
+﻿[dotenv@17.3.1] injecting env (1) from .env -- tip: ÔÜÖ´©Å  enable debug logging with { debug: true }
+[dotenv@17.3.1] injecting env (5) from .env.local -- tip: ÔÜÖ´©Å  load multiple .env files with { path: ['.env.local', '.env'] }
+­ƒÜÇ Starting Data Migration: Google Sheets -> Supabase
+Performance: Fetching live student data from Google Sheets
+node.exe : Performance 
+Error: Failed to fetch 
+sheets data: GaxiosError: 
+request to https://sheets.
+googleapis.com/v4/spreadsh
+eets/1Iwm0SsZB8roRUx07h5Rv
+ILlhweTONHwMQxXBitW_Dug/va
+lues/%27cr69d_studentses.c
+sv%27%21A1%3ACN1000 
+failed, reason: 
+getaddrinfo EAI_AGAIN 
+sheets.googleapis.com
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" "C:
+\Users\peter\AppData\Roami
+ng\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (P  
+  erformance Err....goo   
+ gleapis.com:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+    at Gaxios._request (C:
+\Users\peter\OneDrive\Desk
+top\UMUSA DIGITAL\LSA\lsaa
+pp\node_modules\gaxios\src
+\gaxios.ts:227:15)
+    at process.processTick
+sAndRejections (node:inter
+nal/process/task_queues:10
+4:5)
+    at async 
+JWT.requestAsync (C:\Users
+\peter\OneDrive\Desktop\UM
+USA DIGITAL\LSA\lsaapp\nod
+e_modules\google-auth-libr
+ary\build\src\auth\oauth2c
+lient.js:463:20)
+    at async 
+createAPIRequestAsync (C:\
+Users\peter\OneDrive\Deskt
+op\UMUSA DIGITAL\LSA\lsaap
+p\node_modules\googleapis-
+common\build\src\apireques
+t.js:308:25)
+    at async 
+getStudentRows (C:\Users\p
+eter\OneDrive\Desktop\UMUS
+A DIGITAL\LSA\lsaapp\lib\s
+heets.ts:47:26)
+    at async migrate (C:\U
+sers\peter\OneDrive\Deskto
+p\UMUSA DIGITAL\LSA\lsaapp
+\scripts\migrate-data.ts:1
+4:22) {
+  config: {
+    url: URL {
+      href: 'https://sheet
+s.googleapis.com/v4/spread
+sheets/1Iwm0SsZB8roRUx07h5
+RvILlhweTONHwMQxXBitW_Dug/
+values/%27cr69d_studentses
+.csv%27%21A1%3ACN1000',
+      origin: 'https://she
+ets.googleapis.com',
+      protocol: 'https:',
+      username: '',
+      password: '',
+      host: 
+'sheets.googleapis.com',
+      hostname: 
+'sheets.googleapis.com',
+      port: '',
+      pathname: '/v4/sprea
+dsheets/1Iwm0SsZB8roRUx07h
+5RvILlhweTONHwMQxXBitW_Dug
+/values/%27cr69d_studentse
+s.csv%27%21A1%3ACN1000',
+      search: '',
+      searchParams: 
+URLSearchParams {},
+      hash: ''
+    },
+    method: 'GET',
+    apiVersion: '',
+    userAgentDirectives: 
+[ [Object] ],
+    headers: Headers {
+      'accept-encoding': 
+'gzip',
+      authorization: 
+'<<REDACTED> - See 
+`errorRedactor` option in 
+`gaxios` for 
+configuration>.',
+      'user-agent': 'googl
+e-api-nodejs-client/8.0.1 
+(gzip)',
+      
+'x-goog-api-client': 
+'gdcl/8.0.1 
+gl-node/24.14.0'
+    },
+    validateStatus: 
+[Function (anonymous)],
+    retry: true,
+    responseType: 
+'unknown',
+    errorRedactor: 
+[Function: 
+defaultErrorRedactor],
+    retryConfig: {
+      
+currentRetryAttempt: 2,
+      retry: 3,
+      httpMethodsToRetry: 
+[Array],
+      noResponseRetries: 
+2,
+      
+retryDelayMultiplier: 2,
+      timeOfFirstRequest: 
+1772906500746,
+      totalTimeout: 
+9007199254740991,
+      maxRetryDelay: 
+9007199254740991,
+      statusCodesToRetry: 
+[Array]
+    }
+  },
+  response: undefined,
+  code: 'EAI_AGAIN',
+  status: undefined,
+  error: FetchError: 
+request to https://sheets.
+googleapis.com/v4/spreadsh
+eets/1Iwm0SsZB8roRUx07h5Rv
+ILlhweTONHwMQxXBitW_Dug/va
+lues/%27cr69d_studentses.c
+sv%27%21A1%3ACN1000 
+failed, reason: 
+getaddrinfo EAI_AGAIN 
+sheets.googleapis.com
+      at 
+ClientRequest.<anonymous> 
+(file:///C:/Users/peter/On
+eDrive/Desktop/UMUSA%20DIG
+ITAL/LSA/lsaapp/node_modul
+es/node-fetch/src/index.js
+:108:11)
+      at 
+ClientRequest.emit 
+(node:events:508:28)
+      at emitErrorEvent 
+(node:_http_client:108:11)
+      at TLSSocket.socketE
+rrorListener 
+(node:_http_client:575:5)
+      at TLSSocket.emit 
+(node:events:508:28)
+      at emitErrorNT (node
+:internal/streams/destroy:
+170:8)
+      at emitErrorCloseNT 
+(node:internal/streams/des
+troy:129:3)
+      at process.processTi
+cksAndRejections (node:int
+ernal/process/task_queues:
+90:21) {
+    type: 'system',
+    errno: 'EAI_AGAIN',
+    code: 'EAI_AGAIN',
+    erroredSysCall: 
+'getaddrinfo'
+  },
+  Symbol(gaxios-gaxios-err
+or): '7.1.3',
+  [cause]: FetchError: 
+request to https://sheets.
+googleapis.com/v4/spreadsh
+eets/1Iwm0SsZB8roRUx07h5Rv
+ILlhweTONHwMQxXBitW_Dug/va
+lues/%27cr69d_studentses.c
+sv%27%21A1%3ACN1000 
+failed, reason: 
+getaddrinfo EAI_AGAIN 
+sheets.googleapis.com
+      at 
+ClientRequest.<anonymous> 
+(file:///C:/Users/peter/On
+eDrive/Desktop/UMUSA%20DIG
+ITAL/LSA/lsaapp/node_modul
+es/node-fetch/src/index.js
+:108:11)
+      at 
+ClientRequest.emit 
+(node:events:508:28)
+      at emitErrorEvent 
+(node:_http_client:108:11)
+      at TLSSocket.socketE
+rrorListener 
+(node:_http_client:575:5)
+      at TLSSocket.emit 
+(node:events:508:28)
+      at emitErrorNT (node
+:internal/streams/destroy:
+170:8)
+      at emitErrorCloseNT 
+(node:internal/streams/des
+troy:129:3)
+      at process.processTi
+cksAndRejections (node:int
+ernal/process/task_queues:
+90:21) {
+    type: 'system',
+    errno: 'EAI_AGAIN',
+    code: 'EAI_AGAIN',
+    erroredSysCall: 
+'getaddrinfo'
+  }
+}
+ƒÆÇ Fatal Migration 
+Error: GaxiosError: 
+request to https://sheets.
+googleapis.com/v4/spreadsh
+eets/1Iwm0SsZB8roRUx07h5Rv
+ILlhweTONHwMQxXBitW_Dug/va
+lues/%27cr69d_studentses.c
+sv%27%21A1%3ACN1000 
+failed, reason: 
+getaddrinfo EAI_AGAIN 
+sheets.googleapis.com
+    at Gaxios._request (C:
+\Users\peter\OneDrive\Desk
+top\UMUSA DIGITAL\LSA\lsaa
+pp\node_modules\gaxios\src
+\gaxios.ts:227:15)
+    at process.processTick
+sAndRejections (node:inter
+nal/process/task_queues:10
+4:5)
+    at async 
+JWT.requestAsync (C:\Users
+\peter\OneDrive\Desktop\UM
+USA DIGITAL\LSA\lsaapp\nod
+e_modules\google-auth-libr
+ary\build\src\auth\oauth2c
+lient.js:463:20)
+    at async 
+createAPIRequestAsync (C:\
+Users\peter\OneDrive\Deskt
+op\UMUSA DIGITAL\LSA\lsaap
+p\node_modules\googleapis-
+common\build\src\apireques
+t.js:308:25)
+    at async 
+getStudentRows (C:\Users\p
+eter\OneDrive\Desktop\UMUS
+A DIGITAL\LSA\lsaapp\lib\s
+heets.ts:47:26)
+    at async migrate (C:\U
+sers\peter\OneDrive\Deskto
+p\UMUSA DIGITAL\LSA\lsaapp
+\scripts\migrate-data.ts:1
+4:22) {
+  config: {
+    url: URL {
+      href: 'https://sheet
+s.googleapis.com/v4/spread
+sheets/1Iwm0SsZB8roRUx07h5
+RvILlhweTONHwMQxXBitW_Dug/
+values/%27cr69d_studentses
+.csv%27%21A1%3ACN1000',
+      origin: 'https://she
+ets.googleapis.com',
+      protocol: 'https:',
+      username: '',
+      password: '',
+      host: 
+'sheets.googleapis.com',
+      hostname: 
+'sheets.googleapis.com',
+      port: '',
+      pathname: '/v4/sprea
+dsheets/1Iwm0SsZB8roRUx07h
+5RvILlhweTONHwMQxXBitW_Dug
+/values/%27cr69d_studentse
+s.csv%27%21A1%3ACN1000',
+      search: '',
+      searchParams: 
+URLSearchParams {},
+      hash: ''
+    },
+    method: 'GET',
+    apiVersion: '',
+    userAgentDirectives: 
+[ [Object] ],
+    headers: Headers {
+      'accept-encoding': 
+'gzip',
+      authorization: 
+'<<REDACTED> - See 
+`errorRedactor` option in 
+`gaxios` for 
+configuration>.',
+      'user-agent': 'googl
+e-api-nodejs-client/8.0.1 
+(gzip)',
+      
+'x-goog-api-client': 
+'gdcl/8.0.1 
+gl-node/24.14.0'
+    },
+    validateStatus: 
+[Function (anonymous)],
+    retry: true,
+    responseType: 
+'unknown',
+    errorRedactor: 
+[Function: 
+defaultErrorRedactor],
+    retryConfig: {
+      
+currentRetryAttempt: 2,
+      retry: 3,
+      httpMethodsToRetry: 
+[Array],
+      noResponseRetries: 
+2,
+      
+retryDelayMultiplier: 2,
+      timeOfFirstRequest: 
+1772906500746,
+      totalTimeout: 
+9007199254740991,
+      maxRetryDelay: 
+9007199254740991,
+      statusCodesToRetry: 
+[Array]
+    }
+  },
+  response: undefined,
+  code: 'EAI_AGAIN',
+  status: undefined,
+  error: FetchError: 
+request to https://sheets.
+googleapis.com/v4/spreadsh
+eets/1Iwm0SsZB8roRUx07h5Rv
+ILlhweTONHwMQxXBitW_Dug/va
+lues/%27cr69d_studentses.c
+sv%27%21A1%3ACN1000 
+failed, reason: 
+getaddrinfo EAI_AGAIN 
+sheets.googleapis.com
+      at 
+ClientRequest.<anonymous> 
+(file:///C:/Users/peter/On
+eDrive/Desktop/UMUSA%20DIG
+ITAL/LSA/lsaapp/node_modul
+es/node-fetch/src/index.js
+:108:11)
+      at 
+ClientRequest.emit 
+(node:events:508:28)
+      at emitErrorEvent 
+(node:_http_client:108:11)
+      at TLSSocket.socketE
+rrorListener 
+(node:_http_client:575:5)
+      at TLSSocket.emit 
+(node:events:508:28)
+      at emitErrorNT (node
+:internal/streams/destroy:
+170:8)
+      at emitErrorCloseNT 
+(node:internal/streams/des
+troy:129:3)
+      at process.processTi
+cksAndRejections (node:int
+ernal/process/task_queues:
+90:21) {
+    type: 'system',
+    errno: 'EAI_AGAIN',
+    code: 'EAI_AGAIN',
+    erroredSysCall: 
+'getaddrinfo'
+  },
+  Symbol(gaxios-gaxios-err
+or): '7.1.3',
+  [cause]: FetchError: 
+request to https://sheets.
+googleapis.com/v4/spreadsh
+eets/1Iwm0SsZB8roRUx07h5Rv
+ILlhweTONHwMQxXBitW_Dug/va
+lues/%27cr69d_studentses.c
+sv%27%21A1%3ACN1000 
+failed, reason: 
+getaddrinfo EAI_AGAIN 
+sheets.googleapis.com
+      at 
+ClientRequest.<anonymous> 
+(file:///C:/Users/peter/On
+eDrive/Desktop/UMUSA%20DIG
+ITAL/LSA/lsaapp/node_modul
+es/node-fetch/src/index.js
+:108:11)
+      at 
+ClientRequest.emit 
+(node:events:508:28)
+      at emitErrorEvent 
+(node:_http_client:108:11)
+      at TLSSocket.socketE
+rrorListener 
+(node:_http_client:575:5)
+      at TLSSocket.emit 
+(node:events:508:28)
+      at emitErrorNT (node
+:internal/streams/destroy:
+170:8)
+      at emitErrorCloseNT 
+(node:internal/streams/des
+troy:129:3)
+      at process.processTi
+cksAndRejections (node:int
+ernal/process/task_queues:
+90:21) {
+    type: 'system',
+    errno: 'EAI_AGAIN',
+    code: 'EAI_AGAIN',
+    erroredSysCall: 
+'getaddrinfo'
+  }
+}

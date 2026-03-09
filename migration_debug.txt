@@ -1,0 +1,76 @@
+﻿node.exe : 
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" "C:
+\Users\peter\AppData\Roami
+ng\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (:  
+  String) [], RemoteExc   
+ eption
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+node:internal/modules/run_
+main:107
+    
+triggerUncaughtException(
+    ^
+Error: Transform failed 
+with 1 error:
+C:\Users\peter\OneDrive\De
+sktop\UMUSA DIGITAL\LSA\ls
+aapp\scripts\migrate-data.
+ts:81:8: ERROR: Expected 
+"finally" but found 
+"console"
+    at 
+failureErrorWithLog (C:\Us
+ers\peter\OneDrive\Desktop
+\UMUSA DIGITAL\LSA\lsaapp\
+node_modules\esbuild\lib\m
+ain.js:1467:15)
+    at C:\Users\peter\OneD
+rive\Desktop\UMUSA DIGITAL
+\LSA\lsaapp\node_modules\e
+sbuild\lib\main.js:736:50
+    at responseCallbacks.<
+computed> (C:\Users\peter\
+OneDrive\Desktop\UMUSA DIG
+ITAL\LSA\lsaapp\node_modul
+es\esbuild\lib\main.js:603
+:9)
+    at 
+handleIncomingPacket (C:\U
+sers\peter\OneDrive\Deskto
+p\UMUSA DIGITAL\LSA\lsaapp
+\node_modules\esbuild\lib\
+main.js:658:12)
+    at 
+Socket.readFromStdout (C:\
+Users\peter\OneDrive\Deskt
+op\UMUSA DIGITAL\LSA\lsaap
+p\node_modules\esbuild\lib
+\main.js:581:7)
+    at Socket.emit 
+(node:events:508:28)
+    at addChunk (node:inte
+rnal/streams/readable:563:
+12)
+    at readableAddChunkPus
+hByteMode (node:internal/s
+treams/readable:514:3)
+    at Readable.push (node
+:internal/streams/readable
+:394:5)
+    at Pipe.onStreamRead (
+node:internal/stream_base_
+commons:189:23) {
+  name: 'TransformError'
+}
+
+Node.js v24.14.0

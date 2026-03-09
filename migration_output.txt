@@ -1,0 +1,101 @@
+﻿node.exe : node:internal/m
+odules/cjs/loader:1456
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" "C:
+\Users\peter\AppData\Roami
+ng\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (n  
+  ode:internal/modules/   
+ cjs/loader:1456:Strin    
+g) [], RemoteExceptio    n
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+  const err = new 
+Error(message);
+              ^
+
+Error: Cannot find module 
+'.prisma/client/default'
+Require stack:
+- C:\Users\peter\OneDrive\
+Desktop\UMUSA DIGITAL\LSA\
+lsaapp\node_modules\@prism
+a\client\default.js
+- C:\Users\peter\OneDrive\
+Desktop\UMUSA DIGITAL\LSA\
+lsaapp\lib\db.ts
+- C:\Users\peter\OneDrive\
+Desktop\UMUSA DIGITAL\LSA\
+lsaapp\scripts\migrate-dat
+a.ts
+    at node:internal/modul
+es/cjs/loader:1456:15
+    at nextResolveSimple (
+C:\Users\peter\OneDrive\De
+sktop\UMUSA DIGITAL\LSA\ls
+aapp\node_modules\tsx\dist
+\register-D46fvsV_.cjs:4:1
+004)
+    at C:\Users\peter\OneD
+rive\Desktop\UMUSA DIGITAL
+\LSA\lsaapp\node_modules\t
+sx\dist\register-D46fvsV_.
+cjs:3:2630
+    at C:\Users\peter\OneD
+rive\Desktop\UMUSA DIGITAL
+\LSA\lsaapp\node_modules\t
+sx\dist\register-D46fvsV_.
+cjs:3:1542
+    at resolveTsPaths (C:\
+Users\peter\OneDrive\Deskt
+op\UMUSA DIGITAL\LSA\lsaap
+p\node_modules\tsx\dist\re
+gister-D46fvsV_.cjs:4:760)
+    at C:\Users\peter\OneD
+rive\Desktop\UMUSA DIGITAL
+\LSA\lsaapp\node_modules\t
+sx\dist\register-D46fvsV_.
+cjs:4:1102
+    at m._resolveFilename 
+(file:///C:/Users/peter/On
+eDrive/Desktop/UMUSA%20DIG
+ITAL/LSA/lsaapp/node_modul
+es/tsx/dist/register-B7jrt
+LTO.mjs:1:789)
+    at defaultResolveImpl 
+(node:internal/modules/cjs
+/loader:1066:19)
+    at 
+resolveForCJSWithHooks (no
+de:internal/modules/cjs/lo
+ader:1071:22)
+    at Module._load (node:
+internal/modules/cjs/loade
+r:1242:25) {
+  code: 
+'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\peter\\One
+Drive\\Desktop\\UMUSA DIGI
+TAL\\LSA\\lsaapp\\node_mod
+ules\\@prisma\\client\\def
+ault.js',
+    'C:\\Users\\peter\\One
+Drive\\Desktop\\UMUSA DIGI
+TAL\\LSA\\lsaapp\\lib\\db.
+ts',
+    'C:\\Users\\peter\\One
+Drive\\Desktop\\UMUSA DIGI
+TAL\\LSA\\lsaapp\\scripts\
+\migrate-data.ts'
+  ]
+}
+
+Node.js v24.14.0

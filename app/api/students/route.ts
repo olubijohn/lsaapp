@@ -1,40 +1,30 @@
 import { NextResponse } from 'next/server';
-import { getStudentRows } from '@/lib/sheets';
+import { prisma } from '@/lib/db';
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const org = searchParams.get('org');
 
-    const rows = await getStudentRows();
-    if (!rows || rows.length === 0) {
-      return NextResponse.json({ students: [] });
+    if (!org) {
+      return NextResponse.json({ error: 'Missing organization code' }, { status: 400 });
     }
 
-    const headers = rows[0].map((h: any) => String(h || '').trim());
-    const instuCol = headers.indexOf('cr69d_instucode');
+    console.log(`[Students API] Fetching students for org: "${org}" from Database`);
 
-    let students = rows.slice(1).map(row => {
-        const student: any = {};
-        headers.forEach((header, index) => {
-            if (header) {
-                student[header] = row[index];
-            }
-        });
-        return student;
+    const students = await prisma.student.findMany({
+      where: {
+        cr69d_instucode: org,
+        cr69d_studentactive: true
+      },
+      orderBy: {
+        cr69d_title: 'asc'
+      }
     });
 
-    console.log(`[Students API] Filtering for org: "${org}", instuCol index: ${instuCol}`);
+    console.log(`[Students API] Successfully fetched ${students.length} students from DB`);
 
-    if (instuCol === -1) {
-        console.error('[Students API] Organisation column (cr69d_instucode) not found in headers:', headers);
-    }
-
-    // FILTER BY ORGANIZATION (instuCode) if provided
-    if (org && instuCol !== -1) {
-        students = students.filter(s => String(s.cr69d_instucode || '').trim() === org);
-    }
-
+    // Returning { students: [...] } to match previous API contract
     return NextResponse.json({ students });
 
   } catch (error: any) {

@@ -46,7 +46,7 @@ export async function getStudentRows() {
         const sheets = await getSheetsInstance(true);
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId,
-            range: `'${targetSheet}'!A1:AM1000`, // Narrower range for significant speed boost
+            range: `'${targetSheet}'!A1:CN1000`, // Support up to 92+ columns
         });
 
         const rows = response.data.values || [];

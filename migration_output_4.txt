@@ -1,0 +1,8 @@
+﻿[dotenv@17.3.1] injecting env (1) from .env -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
+[dotenv@17.3.1] injecting env (5) from .env.local -- tip: ­ƒøá´©Å  run anywhere with `dotenvx run -- yourcommand`
+­ƒÜÇ Starting Data Migration: Google Sheets -> Supabase
+Performance: Fetching live student data from Google Sheets
+­ƒôè Found 999 students. Mapping fields...
+ÔÜí Upserting to Supabase...
+
+­ƒÄë Migration Complete! Successfully synced 0 students.
