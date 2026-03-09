@@ -22,7 +22,7 @@ export default function DashboardLayout({
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 flex" style={{ 
+    <div className="min-h-screen bg-[var(--background)] flex" style={{ 
       // Inject theme colors as CSS variables
       ['--primary' as any]: themeColor,
       ['--primary-hover' as any]: `${themeColor}cc`, // 80% opacity for hover

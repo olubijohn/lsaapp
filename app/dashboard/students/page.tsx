@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { 
     Search, 
     Plus, 
@@ -32,15 +32,15 @@ const LevelCard = ({ level, delay }: any) => {
             onClick={() => router.push(`/dashboard/students/${encodeURIComponent(level.name)}`)}
             className="premium-card p-6 cursor-pointer group relative overflow-hidden flex flex-col justify-between min-h-[160px]"
         >
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-full -mr-12 -mt-12 transition-transform duration-500 group-hover:scale-150 group-hover:bg-indigo-100/50" />
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--primary-light)] rounded-full -mr-12 -mt-12 transition-transform duration-500 group-hover:scale-150 group-hover:bg-[var(--primary)]/10" />
             
             <div className="relative z-10">
                 <div className="flex justify-between items-start mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-indigo-600 border border-slate-100 group-hover:border-indigo-200 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--card-bg)] shadow-sm flex items-center justify-center text-[var(--primary)] border border-[var(--border-color)] group-hover:border-[var(--primary)] transition-colors">
                         <GraduationCap className="w-6 h-6" />
                     </div>
                     <div className="flex flex-col items-end">
-                        <span className="text-2xl font-black text-slate-800 tracking-tighter">{level.count}</span>
+                        <span className="text-2xl font-black text-foreground tracking-tighter">{level.count}</span>
                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Students</span>
                     </div>
                 </div>
@@ -76,10 +76,13 @@ const LevelCard = ({ level, delay }: any) => {
 
 export default function StudentsPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const initialSearch = searchParams.get('search') || "";
+    
     const [students, setStudents] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState<any>(null);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState(initialSearch);
     const [selectedLevel, setSelectedLevel] = useState("All Levels");
     const [showDebtors, setShowDebtors] = useState(false);
     const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
@@ -92,7 +95,7 @@ export default function StudentsPage() {
             const org = parsedUser.instuCode || parsedUser.organisation;
             fetchStudents(org);
         }
-    }, []);
+    }, [initialSearch]);
 
     const fetchStudents = async (org: string) => {
         try {
@@ -162,7 +165,7 @@ export default function StudentsPage() {
     if (isLoading) return (
         <div className="h-[80vh] flex flex-col items-center justify-center gap-4">
             <Loader />
-            <p className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Mapping Student Database...</p>
+            <p className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Finding student records...</p>
         </div>
     );
 
@@ -171,52 +174,52 @@ export default function StudentsPage() {
             {/* Header with Stats Overlay */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                 <div className="space-y-1">
-                    <h1 className="text-3xl font-black text-slate-800 tracking-tighter">Student Registry</h1>
-                    <p className="text-[10px] font-black text-[var(--primary)] uppercase tracking-[0.2em] opacity-80 decoration-indigo-500/30 underline-offset-4 underline">
-                        Institutional Intelligence Hub • {students.length} Total Scholars
+                    <h1 className="text-3xl font-black text-foreground tracking-tighter">All Students</h1>
+                    <p className="text-[10px] font-black text-[var(--primary)] uppercase tracking-[0.2em] opacity-80 decoration-[var(--primary)]/30 underline-offset-4 underline">
+                        School Records • {students.length} Total Students
                     </p>
                 </div>
                 
                 <div className="flex items-center gap-3">
-                    <button className="h-12 px-6 bg-white border border-slate-100 text-slate-600 text-xs font-black rounded-2xl flex items-center gap-2 hover:bg-slate-50 transition-all shadow-sm">
-                        <FileDown className="w-4 h-4" /> Export DB
+                    <button className="h-12 px-6 bg-[var(--card-bg)] border border-[var(--border-color)] text-slate-600 text-xs font-black rounded-2xl flex items-center gap-2 hover:bg-[var(--background)] transition-all shadow-sm">
+                        <FileDown className="w-4 h-4" /> Save Records
                     </button>
                     <button 
                         onClick={() => setIsEnrollModalOpen(true)}
-                        className="h-12 px-6 bg-[var(--primary)] text-white text-xs font-black rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-indigo-500/20"
+                        className="h-12 px-6 bg-[var(--primary)] text-white text-xs font-black rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-[var(--primary)]/20"
                     >
-                        <Plus className="w-4 h-4" /> Enroll New
+                        <Plus className="w-4 h-4" /> Add New Student
                     </button>
                 </div>
             </div>
 
             {/* Quick Insights Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="premium-card p-6 bg-indigo-50/50 border-indigo-100 shadow-none flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg">
+                <div className="premium-card p-6 bg-[var(--primary-light)] border-[var(--primary)]/10 shadow-none flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--primary)] flex items-center justify-center text-white shadow-lg">
                         <Users className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest leading-none">Total Capacity</p>
-                        <p className="text-2xl font-black text-slate-800 tracking-tight">{students.length}</p>
+                        <p className="text-[10px] font-black text-[var(--primary)] uppercase tracking-widest leading-none">All Students</p>
+                        <p className="text-2xl font-black text-foreground tracking-tight">{students.length}</p>
                     </div>
                 </div>
-                <div className="premium-card p-6 bg-emerald-50/50 border-emerald-100 shadow-none flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg">
+                <div className="premium-card p-6 bg-[var(--success-light)] border-[var(--success)]/10 shadow-none flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--success)] flex items-center justify-center text-white shadow-lg">
                         <Sparkles className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest leading-none">Active Sections</p>
-                        <p className="text-2xl font-black text-slate-800 tracking-tight">{Object.keys(studentsByLevel).length}</p>
+                        <p className="text-[10px] font-black text-[var(--success)] uppercase tracking-widest leading-none">Number of Classes</p>
+                        <p className="text-2xl font-black text-foreground tracking-tight">{Object.keys(studentsByLevel).length}</p>
                     </div>
                 </div>
-                <div className="premium-card p-6 bg-amber-50/50 border-amber-100 shadow-none flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-600 flex items-center justify-center text-white shadow-lg">
+                <div className="premium-card p-6 bg-[var(--secondary-light)] border-[var(--secondary)]/10 shadow-none flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--secondary)] flex items-center justify-center text-white shadow-lg">
                         <TrendingUp className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest leading-none">Engagement</p>
-                        <p className="text-2xl font-black text-slate-800 tracking-tight">84%</p>
+                        <p className="text-[10px] font-black text-[var(--secondary)] uppercase tracking-widest leading-none">Attendance</p>
+                        <p className="text-2xl font-black text-foreground tracking-tight">84%</p>
                     </div>
                 </div>
             </div>
@@ -224,13 +227,13 @@ export default function StudentsPage() {
             {/* Filters Bar */}
             <div className="premium-card p-4 flex flex-col md:flex-row items-center gap-4">
                 <div className="relative flex-1 group">
-                    <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-600 transition-colors" />
+                    <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-[var(--primary)] transition-colors" />
                     <input 
                         type="text" 
-                        placeholder="Filter by section or grade..." 
+                        placeholder="Filter by class or grade..." 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full h-11 pl-11 pr-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold focus:bg-white focus:border-indigo-600/30 transition-all outline-none"
+                        className="w-full h-11 pl-11 pr-4 bg-[var(--background)] border border-[var(--border-color)] rounded-xl text-xs font-bold focus:bg-[var(--card-bg)] focus:border-[var(--primary)]/30 transition-all outline-none"
                     />
                 </div>
                 
@@ -239,15 +242,15 @@ export default function StudentsPage() {
                         onClick={() => setShowDebtors(!showDebtors)}
                         className={cn(
                             "h-11 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2",
-                            showDebtors ? "bg-rose-600 text-white shadow-lg shadow-rose-600/30" : "bg-slate-50 text-slate-400 border border-slate-100"
+                            showDebtors ? "bg-rose-600 text-white shadow-lg shadow-rose-600/30" : "bg-[var(--background)] text-slate-400 border border-[var(--border-color)]"
                         )}
                     >
-                        <Filter className="w-4 h-4" /> Financial Alerts Only
+                        <Filter className="w-4 h-4" /> Only Students with Fees
                     </button>
                     
-                    <div className="h-11 px-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-2">
+                    <div className="h-11 px-4 bg-[var(--background)] border border-[var(--border-color)] rounded-xl flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-slate-400" />
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Academic Year 2025/26</span>
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Current Year 2025/26</span>
                     </div>
 
                     <button 
@@ -256,7 +259,7 @@ export default function StudentsPage() {
                             setSelectedLevel("All Levels");
                             setShowDebtors(false);
                         }}
-                        className="w-11 h-11 bg-slate-50 hover:bg-slate-100 text-slate-400 border border-slate-100 rounded-xl flex items-center justify-center transition-all"
+                        className="w-11 h-11 bg-[var(--background)] hover:bg-[var(--primary-light)] text-slate-400 border border-[var(--border-color)] rounded-xl flex items-center justify-center transition-all"
                     >
                         <RotateCcw className="w-4 h-4" />
                     </button>
@@ -268,10 +271,10 @@ export default function StudentsPage() {
                 <AnimatePresence mode="popLayout">
                     {levelsArray.length === 0 ? (
                         <div className="col-span-full py-32 flex flex-col items-center gap-4">
-                            <div className="w-24 h-24 bg-slate-50 rounded-[2.5rem] flex items-center justify-center">
+                            <div className="w-24 h-24 bg-[var(--background)] rounded-[2.5rem] flex items-center justify-center">
                                 <Search className="w-10 h-10 text-slate-200" />
                             </div>
-                            <p className="text-slate-400 font-black text-xs uppercase tracking-widest">No matching registry sections found</p>
+                            <p className="text-slate-400 font-black text-xs uppercase tracking-widest">No students found</p>
                         </div>
                     ) : (
                         levelsArray.map((level: any, i) => (
@@ -283,9 +286,9 @@ export default function StudentsPage() {
             
             {/* Footer Insights */}
             <div className="flex justify-center pt-12 pb-6">
-                <div className="px-6 py-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-center">
+                <div className="px-6 py-3 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl shadow-sm text-center">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
-                        Showing {levelsArray.length} Academic Sections • {userData?.organisation || "LSA"} Secure Cloud
+                        Showing {levelsArray.length} Classes • {userData?.organisation || "LSA"} Secure Cloud
                     </p>
                 </div>
             </div>

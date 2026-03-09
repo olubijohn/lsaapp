@@ -72,24 +72,24 @@ export default function StudentModal({ student, isOpen, onClose, onSave }: Stude
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-            <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
+            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
             
-            <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl relative z-10 flex flex-col animate-in zoom-in-95 duration-200">
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between shrink-0">
+            <div className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl relative z-10 flex flex-col animate-in zoom-in-95 duration-200">
+                <div className="p-6 border-b border-[var(--border-color)] flex items-center justify-between shrink-0">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-[var(--primary-soft)] text-[var(--primary)] rounded-xl">
+                        <div className="p-2 bg-[var(--primary-light)] text-[var(--primary)] rounded-xl">
                             {isEdit ? <Save className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
                         </div>
                         <div>
-                            <h2 className="text-xl font-black text-slate-800 tracking-tight">
-                                {isEdit ? "Edit Student Record" : "Enroll New Student"}
+                            <h2 className="text-xl font-black text-foreground tracking-tight">
+                                {isEdit ? "Update Student Info" : "Add New Student"}
                             </h2>
                             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">
-                                {isEdit ? `Updating information for ${student.cr69d_title}` : "Create a new institutional scholarly record"}
+                                {isEdit ? `Editing ${student.cr69d_title}` : "Add a student to the school records"}
                             </p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-lg transition-colors">
+                    <button onClick={onClose} className="p-2 text-slate-400 hover:text-foreground bg-[var(--background)] rounded-lg transition-colors">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -105,32 +105,32 @@ export default function StudentModal({ student, isOpen, onClose, onSave }: Stude
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <FormField 
                             label="Student Full Name *" 
-                            placeholder="John Doe"
+                            placeholder="Full name of student"
                             value={formData.cr69d_title} 
                             onChange={(v) => setFormData({...formData, cr69d_title: v})} 
                         />
                         <FormField 
                             label="Student ID *" 
-                            placeholder="LSA-2025-001"
+                            placeholder="LSA-000"
                             value={formData.cr69d_studentid} 
                             onChange={(v) => setFormData({...formData, cr69d_studentid: v})}
                             disabled={isEdit}
                         />
                         <FormField 
-                            label="Academic Level *" 
-                            placeholder="Primary 1, Grade 10, etc."
+                            label="Class/Grade *" 
+                            placeholder="e.g. Primary 1 or Grade 1"
                             value={formData.cr69d_level} 
                             onChange={(v) => setFormData({...formData, cr69d_level: v})} 
                         />
                          <FormField 
-                            label="Guardian Name" 
-                            placeholder="Jane Doe"
+                            label="Parent/Guardian Name" 
+                            placeholder="Father or Mother's name"
                             value={formData.cr69d_guardianname} 
                             onChange={(v) => setFormData({...formData, cr69d_guardianname: v})} 
                         />
                         <FormField 
                             label="Email Address" 
-                            placeholder="john@example.com"
+                            placeholder="email@example.com"
                             value={formData.cr69d_emailaddress} 
                             onChange={(v) => setFormData({...formData, cr69d_emailaddress: v})} 
                         />
@@ -149,14 +149,14 @@ export default function StudentModal({ student, isOpen, onClose, onSave }: Stude
                             />
                         </div>
                         <FormField 
-                            label="Guardian WhatsApp" 
-                            placeholder="+234..."
+                            label="Parent's WhatsApp" 
+                            placeholder="WhatsApp Number"
                             value={formData.cr69d_guardianwhatsapp} 
                             onChange={(v) => setFormData({...formData, cr69d_guardianwhatsapp: v})} 
                         />
                         <FormField 
-                            label="Guardian Phone" 
-                            placeholder="+234..."
+                            label="Parent's Phone" 
+                            placeholder="Phone Number"
                             value={formData.cr69d_guardianphone} 
                             onChange={(v) => setFormData({...formData, cr69d_guardianphone: v})} 
                         />
@@ -173,28 +173,28 @@ export default function StudentModal({ student, isOpen, onClose, onSave }: Stude
                     </div>
                 </form>
 
-                <div className="p-6 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3 shrink-0">
+                <div className="p-6 border-t border-[var(--border-color)] bg-[var(--background)] flex items-center justify-end gap-3 shrink-0">
                     <button 
                         type="button"
                         onClick={onClose} 
-                        className="h-11 px-6 text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors"
+                        className="h-11 px-6 text-sm font-bold text-slate-500 hover:text-foreground transition-colors"
                     >
-                        Cancel
+                        Back
                     </button>
                     <button 
                         onClick={handleSubmit}
                         disabled={isSaving}
-                        className="h-11 px-8 bg-[var(--primary)] text-white text-sm font-black rounded-xl hover:bg-[var(--primary-hover)] transition-all shadow-lg shadow-primary/20 active:scale-[0.98] flex items-center gap-2"
+                        className="h-11 px-8 bg-[var(--primary)] text-white text-sm font-black rounded-xl hover:opacity-90 transition-all shadow-lg shadow-[var(--primary)]/20 active:scale-[0.98] flex items-center gap-2"
                     >
                         {isSaving ? (
                             <>
                                 <div className="w-4 h-4 border-2 border-white/20 border-t-white animate-spin rounded-full" />
-                                {isEdit ? "Saving Changes..." : "Creating Record..."}
+                                {isEdit ? "Updating..." : "Adding..."}
                             </>
                         ) : (
                             <>
                                 {isEdit ? <Save className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
-                                {isEdit ? "Save Variations" : "Confirm Enrollment"}
+                                {isEdit ? "Save Changes" : "Add Student"}
                             </>
                         )}
                     </button>
@@ -221,7 +221,7 @@ function FormField({ label, placeholder, value, onChange, isTextArea = false, di
                     placeholder={placeholder}
                     onChange={(e) => onChange(e.target.value)}
                     disabled={disabled}
-                    className="w-full min-h-[100px] p-3 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none bg-slate-50 transition-all text-sm font-bold text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full min-h-[100px] p-3 rounded-xl border border-[var(--border-color)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none bg-[var(--background)] transition-all text-sm font-bold text-foreground placeholder:text-slate-400 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
             ) : (
                 <input
@@ -230,7 +230,7 @@ function FormField({ label, placeholder, value, onChange, isTextArea = false, di
                     placeholder={placeholder}
                     onChange={(e) => onChange(e.target.value)}
                     disabled={disabled}
-                    className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none bg-slate-50 transition-all text-sm font-bold text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-12 px-4 rounded-xl border border-[var(--border-color)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none bg-[var(--background)] transition-all text-sm font-bold text-foreground placeholder:text-slate-400 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
             )}
         </div>

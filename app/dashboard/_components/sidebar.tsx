@@ -34,34 +34,34 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const menuGroups = [
   {
-    title: "Intelligence",
+    title: "School Overview",
     items: [
-      { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard/home" },
-      { name: "Student Registry", icon: Users, href: "/dashboard/students" },
-      { name: "Academic Staff", icon: GraduationCap, href: "/dashboard/teachers" },
+      { name: "My Dashboard", icon: LayoutDashboard, href: "/dashboard/home" },
+      { name: "Students", icon: Users, href: "/dashboard/students" },
+      { name: "Teachers", icon: GraduationCap, href: "/dashboard/teachers" },
     ]
   },
   {
-    title: "Management",
+    title: "School Admin",
     items: [
-      { name: "Financial Hub", icon: Wallet, href: "/dashboard/finance" },
-      { name: "Attendance Hub", icon: ClipboardList, href: "/dashboard/attendance" },
-      { name: "Library Portal", icon: School, href: "/dashboard/library" },
+      { name: "Fees & Money", icon: Wallet, href: "/dashboard/finance" },
+      { name: "Attendance", icon: ClipboardList, href: "/dashboard/attendance" },
+      { name: "Library", icon: School, href: "/dashboard/library" },
     ]
   },
   {
-    title: "Communication",
+    title: "Help & Messages",
     items: [
-      { name: "Message Center", icon: MessageSquare, href: "/dashboard/message" },
-      { name: "Global Notices", icon: Bell, href: "/dashboard/notice" },
-      { name: "School Calendar", icon: Calendar, href: "/dashboard/calendar" },
+      { name: "Messages", icon: MessageSquare, href: "/dashboard/message" },
+      { name: "Announcements", icon: Bell, href: "/dashboard/notice" },
+      { name: "Calendar", icon: Calendar, href: "/dashboard/calendar" },
     ]
   },
   {
     title: "Settings",
     items: [
-      { name: "System Config", icon: Settings, href: "/dashboard/settings" },
-      { name: "Admin Profile", icon: UserCircle, href: "/dashboard/profile" },
+      { name: "App Settings", icon: Settings, href: "/dashboard/settings" },
+      { name: "My Profile", icon: UserCircle, href: "/dashboard/profile" },
     ]
   }
 ];
@@ -93,7 +93,7 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
       initial={false}
       animate={{ width: isCollapsed ? 88 : 288 }}
       className={cn(
-        "h-screen bg-white flex flex-col border-r border-slate-200/60 shadow-[4px_0_24px_rgba(0,0,0,0.02)] fixed top-0 z-50 transition-all lg:left-0",
+        "h-screen bg-[var(--sidebar-bg)] flex flex-col border-r border-[var(--border-color)] shadow-[4px_0_24px_rgba(0,0,0,0.02)] fixed top-0 z-50 transition-all lg:left-0",
         isOpen ? "left-0" : "-left-80"
       )}
     >
@@ -103,7 +103,7 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
 
       {/* Header */}
       <div className={cn(
-        "p-6 flex items-center border-b border-slate-50 relative z-10 min-h-[80px]",
+        "p-6 flex items-center border-b border-[var(--border-color)] relative z-10 min-h-[80px]",
         isCollapsed ? "justify-center" : "justify-between"
       )}>
         <div className="flex items-center gap-3">
@@ -121,7 +121,7 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
               animate={{ opacity: 1, x: 0 }}
               className="flex flex-col"
             >
-              <span className="text-sm font-black text-slate-800 tracking-tight leading-none">LSA PORTAL</span>
+              <span className="text-sm font-black text-foreground tracking-tight leading-none">LSA PORTAL</span>
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">Next Generation</span>
             </motion.div>
           )}
@@ -138,7 +138,7 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
       </div>
 
       {isCollapsed && (
-        <div className="py-4 flex justify-center border-b border-slate-50 relative z-10">
+        <div className="py-4 flex justify-center border-b border-[var(--border-color)] relative z-10">
           <button 
             onClick={onToggleCollapse}
             className="p-1.5 text-slate-400 hover:text-[var(--primary)] hover:bg-[var(--primary-light)] rounded-xl transition-all"
@@ -167,8 +167,8 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group relative",
                       isActive 
-                        ? "bg-[var(--primary-light)] text-[var(--primary)] shadow-[0_4px_12px_rgba(79,70,229,0.08)]" 
-                        : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                        ? "bg-[var(--primary-light)] text-[var(--primary)] shadow-[0_4px_12px_rgba(34,197,94,0.08)]" 
+                        : "text-slate-500 hover:bg-[var(--background)] hover:text-foreground"
                     )}
                   >
                     <item.icon className={cn(
@@ -199,19 +199,19 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
       </div>
 
       {/* Footer Profile */}
-      <div className="p-4 mt-auto border-t border-slate-50 bg-slate-50/30 relative z-10">
+      <div className="p-4 mt-auto border-t border-[var(--border-color)] bg-[var(--background)] relative z-10">
         <div 
           className={cn(
-            "flex items-center gap-3 p-2 rounded-2xl bg-white border border-slate-100/50 shadow-sm hover:shadow-md transition-all cursor-pointer group leading-none",
+            "flex items-center gap-3 p-2 rounded-2xl bg-[var(--card-bg)] border border-[var(--border-color)] shadow-sm hover:shadow-md transition-all cursor-pointer group leading-none",
             isCollapsed && "justify-center"
           )}
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-white font-black text-sm shadow-sm shrink-0">
-            {user?.username?.charAt(0).toUpperCase() || "A"}
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-black text-sm shadow-sm shrink-0">
+            {user?.name?.charAt(0).toUpperCase() || (user?.username?.charAt(0).toUpperCase()) || "A"}
           </div>
           {!isCollapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-slate-800 truncate">{user?.username || "Admin"}</p>
+              <p className="text-sm font-bold text-foreground truncate">{user?.name || user?.username || "Admin"}</p>
               <p className="text-[10px] text-[var(--primary)] font-black uppercase tracking-wider mt-0.5">
                 {user?.role || "Manager"}
               </p>
@@ -233,11 +233,11 @@ const Sidebar = ({ isOpen, isCollapsed, onToggleCollapse, onClose }: {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #E2E8F0;
+          background: var(--border-color);
           border-radius: 10px;
         }
         .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-          background: #CBD5E1;
+          background: var(--primary);
         }
       `}</style>
     </motion.aside>

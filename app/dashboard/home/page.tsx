@@ -37,29 +37,54 @@ import Loader from "@/components/ui/loader";
 
 const COLORS = ['#4F46E5', '#10B981', '#F59E0B', '#EC4899', '#6366F1'];
 
-const StatCard = ({ title, value, icon: Icon, trend, color, subtext, delay }: any) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay }}
-    className="premium-card p-6 flex flex-col justify-between"
-  >
-    <div className="flex justify-between items-start">
-      <div className={cn("p-3 rounded-2xl", color)}>
-        <Icon className="w-6 h-6 text-white" />
+const CircularProgress = ({ percentage, label, sublabel, color, size = 120 }: any) => {
+  const radius = size * 0.4;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg className="w-full h-full transform -rotate-90">
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="currentColor"
+            strokeWidth="8"
+            fill="transparent"
+            className="text-slate-100"
+          />
+          <motion.circle
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="currentColor"
+            strokeWidth="8"
+            fill="transparent"
+            strokeDasharray={circumference}
+            className={color}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-xl font-black text-slate-800">{Math.round(percentage)}%</span>
+          <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{sublabel}</span>
+        </div>
       </div>
-      {trend && (
-        <span className="flex items-center gap-1 text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-1 rounded-full uppercase tracking-widest">
-          <ArrowUpRight className="w-3 h-3" /> {trend}
-        </span>
-      )}
+      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{label}</p>
     </div>
-    <div className="mt-6">
-      <h3 className="text-3xl font-black text-slate-800 tracking-tighter">{value}</h3>
-      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{title}</p>
-      {subtext && <p className="text-[10px] text-slate-400 mt-0.5 italic">{subtext}</p>}
-    </div>
-  </motion.div>
+  );
+};
+
+const MetricItem = ({ label, value, sublabel, color }: any) => (
+  <div className="space-y-1">
+    <h3 className="text-3xl font-black text-slate-800 tracking-tighter">{value}</h3>
+    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">{label}</p>
+    {sublabel && <p className="text-[8px] text-slate-400 opacity-70 italic">{sublabel}</p>}
+  </div>
 );
 
 const DashboardHome = () => {
@@ -69,7 +94,6 @@ const DashboardHome = () => {
 
   const fetchStats = async (org: string) => {
     try {
-      // Check cache first for instant load
       const cached = localStorage.getItem(`dashboard_stats_${org}`);
       if (cached) {
         setStats(JSON.parse(cached));
@@ -101,255 +125,204 @@ const DashboardHome = () => {
     }
   }, []);
 
-  const pieData = useMemo(() => [
-    { name: 'Male', value: stats?.genderRatio?.male || 0 },
-    { name: 'Female', value: stats?.genderRatio?.female || 0 },
-  ], [stats]);
-
   if (isLoading) return (
-    <div className="h-[80vh] flex flex-col items-center justify-center gap-4">
+    <div className="h-[80vh] flex flex-col items-center justify-center gap-4 text-center">
         <Loader />
-        <p className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">Syncing Academic Intelligence...</p>
+        <p className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">Getting your school data ready...</p>
     </div>
   );
 
   return (
-    <div className="max-w-[1600px] mx-auto space-y-8 pb-12 animate-in fade-in duration-1000">
+    <div className="max-w-[1600px] mx-auto space-y-6 pb-12 animate-in fade-in duration-700">
       
-      {/* Premium Hero Section */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="relative min-h-[420px] rounded-[2.5rem] overflow-hidden group shadow-2xl flex items-center"
-      >
+      {/* Top Banner Section */}
+      <div className="relative h-[140px] rounded-[2rem] overflow-hidden group shadow-xl">
         <img 
           src="/images/school_dashboard_banner_1772536875991.png" 
-          alt="School"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+          alt="School Dashboard"
+          className="absolute inset-0 w-full h-full object-cover grayscale-[20%] opacity-90 transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-transparent p-8 md:p-12 min-h-full flex flex-col justify-center">
-            <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-                className="max-w-xl relative z-10"
-            >
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center">
-                        <GraduationCap className="w-6 h-6 text-white" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 to-transparent p-6 flex flex-col justify-center">
+            <div className="flex justify-between items-center">
+                <div className="text-white">
+                    <h1 className="text-2xl font-black tracking-tighter mb-0.5">Welcome back,</h1>
+                    <h2 className="text-3xl font-black tracking-tighter opacity-95">{user?.name || "Member"}!</h2>
+                </div>
+                <div className="text-right text-white/95">
+                    <p className="text-[10px] font-black uppercase tracking-widest leading-none drop-shadow-md">
+                        {user?.organisation?.toUpperCase() || "LSA ACADEMY"}
+                    </p>
+                    <p className="text-[9px] font-bold opacity-80 mt-1">{user?.location || "Kaduna, Nigeria"}</p>
+                    <div className="mt-3 flex items-center justify-end gap-2 text-[8px] font-black uppercase tracking-widest bg-emerald-500/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-emerald-500/30">
+                        <ShieldCheck className="w-3 h-3" /> Secure Access Active
                     </div>
-                    <span className="text-xs font-black text-white/80 uppercase tracking-[0.2em] bg-white/5 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10">
-                        Academic Intelligence v2.0
-                    </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4 leading-tight">
-                    Unlocking <span className="text-indigo-400">Potential,</span><br className="hidden md:block" />Creating Leaders.
-                </h1>
-                <p className="text-slate-300 text-base md:text-lg font-medium mb-8 leading-relaxed opacity-80 decoration-indigo-500/30 underline-offset-4 underline">
-                    {user?.organisation || "LSA School"} is currently managing <span className="text-white font-bold">{stats?.totalStudents || 0}</span> bright students across <span className="text-white font-bold">{stats?.levels?.length || 0}</span> grade levels.
-                </p>
-                <div className="flex flex-wrap items-center gap-4">
-                    <button className="h-14 px-8 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all shadow-xl shadow-indigo-600/30 flex items-center gap-3">
-                        Launch Rapid Registration <ChevronRight className="w-4 h-4" />
-                    </button>
-                    <button onClick={() => fetchStats(user?.instuCode || user?.organisation)} className="h-14 w-14 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center text-white transition-all">
-                        <RefreshCw className="w-5 h-5 transition-transform hover:rotate-180 duration-500" />
-                    </button>
-                </div>
-            </motion.div>
+            </div>
         </div>
-      </motion.div>
-
-      {/* Primary Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard 
-            title="Active Intelligence" 
-            value={stats?.totalStudents || 0} 
-            icon={Users} 
-            trend="+12%" 
-            color="bg-indigo-500 shadow-indigo-200 shadow-lg" 
-            subtext={`${Math.round(stats?.activePercentage || 0)}% enrollment active`}
-            delay={0.1}
-        />
-        <StatCard 
-            title="Financial Liquidity" 
-            value={`₦${(stats?.inactiveDebtSum || 0).toLocaleString()}`} 
-            icon={CreditCard} 
-            trend="-3%" 
-            color="bg-emerald-500 shadow-emerald-200 shadow-lg" 
-            subtext="Inactive accounts debt sum"
-            delay={0.2}
-        />
-        <StatCard 
-            title="Communications" 
-            value={stats?.whatsappFilled || 0} 
-            icon={MessageSquare} 
-            trend="+5%" 
-            color="bg-amber-500 shadow-amber-200 shadow-lg" 
-            subtext="Verified WhatsApp connections"
-            delay={0.3}
-        />
-        <StatCard 
-            title="Logistics Reach" 
-            value={stats?.busSubscribers || 0} 
-            icon={Bus} 
-            color="bg-rose-500 shadow-rose-200 shadow-lg" 
-            subtext="Enrolled in transport services"
-            delay={0.4}
-        />
       </div>
 
-      {/* Analytics Visualization Section */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-        
-        {/* Enrollment Distribution Chart */}
-        <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
-            className="xl:col-span-8 premium-card p-8"
-        >
-            <div className="flex items-center justify-between mb-8">
-                <div>
-                    <h3 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                        <TrendingUp className="w-5 h-5 text-indigo-500" /> Grade Distribution
-                    </h3>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Student density per academic level</p>
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        {/* Main Content Areas */}
+        <div className="xl:col-span-9 space-y-6">
+            
+            {/* Row 1: Key Charts */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="premium-card p-6 flex items-center justify-center min-h-[180px]">
+                    <CircularProgress 
+                        percentage={stats?.activePercentage || 0} 
+                        label="Students in School" 
+                        sublabel="Active"
+                        color="text-emerald-500"
+                    />
+                </div>
+                <div className="premium-card p-6 flex flex-col items-center justify-center min-h-[180px]">
+                    <div className="flex items-end gap-1 mb-2">
+                        <span className="text-2xl font-black text-foreground">{stats?.genderRatio?.male}/{stats?.genderRatio?.female}</span>
+                    </div>
+                    <CircularProgress 
+                        percentage={stats?.totalStudents ? (stats.genderRatio.male / stats.totalStudents) * 100 : 0} 
+                        label="Boys vs Girls" 
+                        sublabel="Male"
+                        color="text-indigo-500"
+                    />
+                </div>
+                <div className="premium-card p-6 flex items-center justify-center min-h-[180px]">
+                    <CircularProgress 
+                        percentage={stats?.clearedVsDebtors?.cleared / stats?.totalStudents * 100} 
+                        label="Account Status" 
+                        sublabel="Paid"
+                        color="text-teal-600"
+                    />
+                </div>
+                <div className="premium-card p-6 flex items-center justify-center min-h-[180px]">
+                    <CircularProgress 
+                        percentage={stats?.paymentRatio || 0} 
+                        label="Payment Progress" 
+                        sublabel="Owed"
+                        color="text-rose-500"
+                    />
+                </div>
+            </div>
+
+            {/* Row 2: Metrics List */}
+            <div className="premium-card p-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+                <MetricItem label="Fully Paid" value={stats?.clearedBalanceCount || 0} sublabel="Students who have paid everything" />
+                <MetricItem label="Overpaid" value={stats?.creditBalanceCount || 0} sublabel="Students who paid extra money" />
+                <MetricItem label="Still Owed" value={stats?.totalDebtors || 0} color="text-rose-600" />
+                <MetricItem label="Total Records" value={stats?.totalStudents || 0} sublabel="All students in database" />
+            </div>
+
+            {/* Row 3: Financial Visuals & Profile Health */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Owing vs Paid Bar Chart */}
+                <div className="premium-card p-8 min-h-[300px]">
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Money Overview (Fees)</h3>
+                    </div>
+                    <div className="flex h-40 gap-4 items-end mt-8">
+                        <div className="flex-1 flex flex-col items-center gap-2">
+                            <motion.div 
+                                initial={{ height: 0 }} animate={{ height: '100%' }}
+                                className="w-full bg-[var(--primary-light)] rounded-xl relative overflow-hidden flex items-end justify-center"
+                            >
+                                <div className="absolute inset-0 bg-[var(--primary)] opacity-10" />
+                                <span className="text-[10px] font-black text-[var(--primary)] mb-2 drop-shadow-sm">₦{stats?.totalOwing?.toLocaleString()}</span>
+                            </motion.div>
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Owed</span>
+                        </div>
+                        <div className="flex-1 flex flex-col items-center gap-2">
+                            <motion.div 
+                                initial={{ height: 0 }} animate={{ height: '30%' }}
+                                className="w-full bg-[var(--sidebar-bg)] rounded-xl border border-[var(--border-color)] flex items-end justify-center"
+                            >
+                                <span className="text-[10px] font-black text-foreground mb-2">₦{stats?.totalPaid?.toLocaleString()}</span>
+                            </motion.div>
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Paid</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Profile Completion */}
+                <div className="premium-card p-8 flex flex-col gap-6">
+                    <p className="text-[11px] font-bold text-slate-400 italic">Profile Check: {stats?.incompleteProfiles} students need more info</p>
+                    <div className="flex justify-around items-center flex-1">
+                        <CircularProgress 
+                            percentage={stats?.totalStudents ? (stats.whatsappFilled / stats.totalStudents) * 100 : 0} 
+                            label="Has WhatsApp" 
+                            sublabel={stats?.whatsappFilled}
+                            size={100}
+                            color="text-emerald-500"
+                        />
+                        <CircularProgress 
+                            percentage={stats?.totalStudents ? (stats.emailsFilled / stats.totalStudents) * 100 : 0} 
+                            label="Has Email" 
+                            sublabel={stats?.emailsFilled}
+                            size={100}
+                            color="text-indigo-500"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Inactive Debt Overlay (Small Card) */}
+            <div className="premium-card p-6 bg-[var(--secondary-light)] border-[var(--secondary)] flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--secondary)] flex items-center justify-center text-white shadow-lg">
+                        <Zap className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p className="text-2xl font-black text-foreground tracking-tighter">₦{(stats?.inactiveDebtSum || 0).toLocaleString()}</p>
+                        <p className="text-[10px] font-black text-[var(--secondary)] uppercase tracking-widest">Money Owed by Old Students</p>
+                    </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-indigo-500" />
-                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Enrollment Count</span>
+                    <span className="w-3 h-3 rounded-full bg-[var(--secondary)] animate-pulse" />
+                    <span className="text-[9px] font-black text-slate-400 uppercase">Alert</span>
                 </div>
             </div>
-            
-            <div className="h-[400px] w-full mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={stats?.levels}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                        <XAxis 
-                            dataKey="name" 
-                            axisLine={false} 
-                            tickLine={false} 
-                            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} 
-                            interval={0}
-                            angle={-45}
-                            textAnchor="end"
-                            height={80}
-                        />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} />
-                        <Tooltip 
-                            cursor={{ fill: '#4F46E5', opacity: 0.05 }}
-                            contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '12px' }}
-                            labelStyle={{ fontWeight: 900, fontSize: '12px', marginBottom: '4px', color: '#1e293b' }}
-                        />
-                        <Bar 
-                            dataKey="count" 
-                            fill="#4F46E5" 
-                            radius={[8, 8, 0, 0]} 
-                            barSize={40}
-                            animationBegin={1000}
-                        />
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
-        </motion.div>
+        </div>
 
-        {/* Demographics & Insights */}
-        <div className="xl:col-span-4 space-y-8">
-            <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
-                className="premium-card p-8 flex flex-col items-center"
-            >
-                <div>
-                    <h3 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2 mb-1">
-                        <PieChartIcon className="w-5 h-5 text-indigo-500" /> Demographics
-                    </h3>
+        {/* Side Lists: Sections & Levels */}
+        <div className="xl:col-span-3 space-y-6">
+            <div className="premium-card p-6 h-full flex flex-col max-h-[800px]">
+                <div className="space-y-6 flex-1 overflow-hidden flex flex-col">
+                    <div>
+                        <h3 className="text-[11px] font-black text-[var(--primary)] uppercase tracking-widest mb-4 border-b border-[var(--border-color)] pb-2">Class Groups</h3>
+                        <div className="space-y-3 overflow-y-auto max-h-[220px] pr-2 custom-scrollbar">
+                            {stats?.sections?.map((item: any, i: number) => (
+                                <div key={i} className="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]" />
+                                        <p className="text-[11px] font-bold text-foreground opacity-80 group-hover:text-[var(--primary)] transition-colors">{item.name}</p>
+                                    </div>
+                                    <span className="text-[10px] font-black text-slate-400">({item.count})</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                        <h3 className="text-[11px] font-black text-[var(--secondary)] uppercase tracking-widest mb-4 border-b border-[var(--border-color)] pb-2 mt-4">Grade Levels</h3>
+                        <div className="space-y-2 overflow-y-auto pr-2 custom-scrollbar grid grid-cols-2 gap-x-4">
+                            {stats?.levels?.map((item: any, i: number) => (
+                                <div key={i} className="flex justify-between items-center group py-1.5 border-b border-[var(--border-color)]/30 hover:bg-[var(--primary-light)] px-1 rounded-lg transition-all">
+                                    <p className="text-[10px] font-bold text-foreground opacity-80 truncate max-w-[80px]">{item.name}</p>
+                                    <span className="text-[9px] font-black text-slate-400">({item.count})</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
                 
-                <div className="h-64 w-full relative">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                            <Pie
-                                data={pieData}
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={60}
-                                outerRadius={90}
-                                paddingAngle={8}
-                                dataKey="value"
-                                animationBegin={1500}
-                            >
-                                {pieData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <Tooltip />
-                        </PieChart>
-                    </ResponsiveContainer>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <span className="text-2xl font-black text-slate-800 leading-none">{stats?.totalStudents || 0}</span>
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">Total</span>
+                <div className="mt-8 pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                        <span>DB SYNC OK</span>
+                        <span>v2.4.9</span>
                     </div>
                 </div>
-
-                <div className="flex gap-8 mt-4">
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-indigo-500" />
-                        <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Male</p>
-                            <p className="text-lg font-black text-slate-800">{(stats?.genderRatio?.male || 0)}</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                        <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Female</p>
-                            <p className="text-lg font-black text-slate-800">{(stats?.genderRatio?.female || 0)}</p>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-
-            {/* Verification Status Card */}
-            <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7 }}
-                className="bg-slate-900 rounded-[2rem] p-8 text-white relative overflow-hidden group shadow-2xl"
-            >
-                <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/20 rounded-full -mr-20 -mt-20 blur-3xl transform group-hover:scale-110 transition-transform duration-700" />
-                <div className="relative z-10 space-y-6">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20">
-                            <ShieldCheck className="w-5 h-5 text-indigo-400" />
-                        </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-indigo-200">System Integrity</span>
-                    </div>
-                    <h4 className="text-2xl font-black tracking-tighter leading-tight">Data Health & <br/>Profile Completion</h4>
-                    <div className="space-y-4">
-                        <div className="flex justify-between items-end text-xs font-black uppercase tracking-wider text-slate-400">
-                             <span>Profile Verification</span>
-                             <span className="text-indigo-400">76%</span>
-                        </div>
-                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                            <motion.div 
-                                initial={{ width: 0 }}
-                                animate={{ width: '76%' }}
-                                transition={{ duration: 1.5, delay: 1 }}
-                                className="h-full bg-gradient-to-r from-indigo-500 to-indigo-400" 
-                            />
-                        </div>
-                        <p className="text-[10px] text-slate-400 italic">
-                            {stats?.incompleteProfiles || 0} student profiles require attention for full digital verification.
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
+            </div>
         </div>
       </div>
-
     </div>
   );
 };

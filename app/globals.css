@@ -4,7 +4,7 @@
   --background: #F8FAFC;
   --foreground: #0F172A;
   
-  /* Premium School Theme Colors */
+  /* Premium School Theme Colors - Light */
   --primary: #4F46E5;
   --primary-light: #EEF2FF;
   --secondary: #F59E0B;
@@ -15,6 +15,25 @@
   --success-light: #ECFDF5;
   --sidebar-bg: #FFFFFF;
   --card-bg: #FFFFFF;
+  --border-color: rgba(226, 232, 240, 0.8);
+}
+
+[data-theme="dark"] {
+  --background: #020617;
+  --foreground: #F8FAFC;
+  
+  /* Premium School Theme Colors - Dark (Black & Green) */
+  --primary: #22C55E;
+  --primary-light: rgba(34, 197, 94, 0.1);
+  --secondary: #FBBF24;
+  --secondary-light: rgba(251, 191, 36, 0.1);
+  --accent: #22C55E;
+  --accent-light: rgba(34, 197, 94, 0.1);
+  --success: #22C55E;
+  --success-light: rgba(34, 197, 94, 0.1);
+  --sidebar-bg: #0F172A;
+  --card-bg: #1E293B;
+  --border-color: rgba(51, 65, 85, 0.5);
 }
 
 @theme inline {
@@ -31,11 +50,12 @@ body {
   color: var(--foreground);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .premium-card {
   background: var(--card-bg);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid var(--border-color);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
   border-radius: 1.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -44,12 +64,13 @@ body {
 .premium-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-  border-color: rgba(79, 70, 229, 0.2);
+  border-color: var(--primary);
 }
 
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-color);
+  opacity: 0.9;
 }
