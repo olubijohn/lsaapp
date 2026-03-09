@@ -34,7 +34,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "@/components/ui/loader";
 import { cn } from "@/lib/utils";
-import EditStudentModal from "../../_components/edit-student-modal";
+import StudentModal from "../../_components/student-modal";
 
 const DetailSection = ({ title, icon: Icon, children, delay }: any) => (
     <motion.section 
@@ -115,7 +115,8 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
         }
     };
 
-    const handleSave = async (studentId: string, data: any) => {
+    const handleSave = async (studentId: string | null, data: any) => {
+        if (!studentId) return;
         const res = await fetch('/api/students/crud', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -370,7 +371,7 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
             </div>
 
             {isEditModalOpen && (
-                <EditStudentModal 
+                <StudentModal 
                     student={student}
                     isOpen={isEditModalOpen}
                     onClose={() => setIsEditModalOpen(false)}

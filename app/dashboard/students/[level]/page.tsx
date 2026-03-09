@@ -23,6 +23,8 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "@/components/ui/loader";
 import { cn } from "@/lib/utils";
+import StudentModal from "../_components/student-modal";
+import { Edit2, Trash2 } from "lucide-react";
 
 export default function LevelStudentsPage({ params }: { params: Promise<{ level: string }> }) {
     const resolvedParams = use(params);
@@ -32,6 +34,8 @@ export default function LevelStudentsPage({ params }: { params: Promise<{ level:
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState<any>(null);
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -65,6 +69,41 @@ export default function LevelStudentsPage({ params }: { params: Promise<{ level:
             console.error("Failed to fetch students:", err);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleSave = async (id: string | null, data: any) => {
+        const org = userData.instuCode || userData.organisation;
+        const url = id ? '/api/students/crud' : '/api/students';
+        const method = id ? 'PATCH' : 'POST';
+        
+        const res = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(id ? { id, data } : { ...data, cr69d_instucode: org })
+        });
+
+        if (!res.ok) {
+            const error = await res.json();
+            throw new Error(error.error || "Operation failed");
+        }
+
+        fetchStudents(org);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this student record?")) return;
+        
+        try {
+            const res = await fetch(`/api/students/crud?id=${id}`, { method: 'DELETE' });
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error);
+            }
+            const org = userData.instuCode || userData.organisation;
+            fetchStudents(org);
+        } catch (err: any) {
+            alert("Error: " + err.message);
         }
     };
 
@@ -108,7 +147,13 @@ export default function LevelStudentsPage({ params }: { params: Promise<{ level:
                     <button className="h-12 px-6 bg-white border border-slate-100 text-slate-600 text-xs font-black rounded-2xl flex items-center gap-2 hover:bg-slate-50 transition-all shadow-sm">
                         <FileDown className="w-4 h-4" /> Export Level
                     </button>
-                    <button className="h-12 px-6 bg-indigo-600 text-white text-xs font-black rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-indigo-600/20">
+                    <button 
+                        onClick={() => {
+                            setSelectedStudent(null);
+                            setIsModalOpen(true);
+                        }}
+                        className="h-12 px-6 bg-indigo-600 text-white text-xs font-black rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-indigo-600/20"
+                    >
                         <UserPlus className="w-4 h-4" /> Register Student
                     </button>
                 </div>
@@ -226,13 +271,22 @@ export default function LevelStudentsPage({ params }: { params: Promise<{ level:
                                                     </p>
                                                 </div>
                                             </td>
-                                            <td className="px-8 py-5 text-right">
+                                             <td className="px-8 py-5 text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <button className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-indigo-600 flex items-center justify-center transition-all border border-slate-100">
-                                                        <CreditCard className="w-4 h-4" />
+                                                    <button 
+                                                        onClick={() => {
+                                                            setSelectedStudent(student);
+                                                            setIsModalOpen(true);
+                                                        }}
+                                                        className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-indigo-600 flex items-center justify-center transition-all border border-slate-100"
+                                                    >
+                                                        <Edit2 className="w-4 h-4" />
                                                     </button>
-                                                    <button className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-indigo-600 flex items-center justify-center transition-all border border-slate-100">
-                                                        <MoreHorizontal className="w-4 h-4" />
+                                                    <button 
+                                                        onClick={() => handleDelete(student.cr69d_studentid)}
+                                                        className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-rose-600 flex items-center justify-center transition-all border border-slate-100"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
                                                     </button>
                                                 </div>
                                             </td>
@@ -255,6 +309,15 @@ export default function LevelStudentsPage({ params }: { params: Promise<{ level:
                     </div>
                 </div>
             </div>
+
+            {isModalOpen && (
+                <StudentModal 
+                    student={selectedStudent}
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    onSave={handleSave}
+                />
+            )}
         </div>
     );
 }

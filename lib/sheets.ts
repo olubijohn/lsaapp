@@ -135,3 +135,40 @@ export async function deleteStudentRow(id: string) {
         throw error;
     }
 }
+
+export async function addStudentRow(data: any) {
+    const spreadsheetId = process.env.GOOGLE_SHEETS_ID_STUDENTS;
+    const targetSheet = 'cr69d_studentses.csv';
+
+    try {
+        const sheets = await getSheetsInstance(false);
+        const rows = await getStudentRows();
+        const headers = rows[0];
+
+        // Prepare new row with correct column mapping
+        const newRow = new Array(headers.length).fill('');
+        Object.keys(data).forEach(key => {
+            const colIndex = headers.indexOf(key);
+            if (colIndex !== -1) {
+                newRow[colIndex] = data[key];
+            }
+        });
+
+        // Append to Google Sheets
+        await sheets.spreadsheets.values.append({
+            spreadsheetId,
+            range: `'${targetSheet}'!A:A`,
+            valueInputOption: 'RAW',
+            requestBody: { values: [newRow] },
+        });
+
+        // Invalidate cache
+        const cacheKey = `${spreadsheetId}-${targetSheet}`;
+        delete globalCache[cacheKey];
+
+        return true;
+    } catch (error) {
+        console.error('Failed to add student to sheets:', error);
+        throw error;
+    }
+}

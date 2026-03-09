@@ -20,6 +20,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "@/components/ui/loader";
 import { cn } from "@/lib/utils";
+import StudentModal from "./_components/student-modal";
 
 const LevelCard = ({ level, delay }: any) => {
     const router = useRouter();
@@ -81,6 +82,7 @@ export default function StudentsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedLevel, setSelectedLevel] = useState("All Levels");
     const [showDebtors, setShowDebtors] = useState(false);
+    const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -115,6 +117,23 @@ export default function StudentsPage() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleEnroll = async (id: string | null, data: any) => {
+        const org = userData.instuCode || userData.organisation;
+        const res = await fetch('/api/students', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...data, cr69d_instucode: org })
+        });
+        
+        if (!res.ok) {
+            const error = await res.json();
+            throw new Error(error.error || "Enrollment failed");
+        }
+        
+        // Refresh data
+        fetchStudents(org);
     };
 
     const studentsByLevel = students.reduce((acc: any, student: any) => {
@@ -162,7 +181,10 @@ export default function StudentsPage() {
                     <button className="h-12 px-6 bg-white border border-slate-100 text-slate-600 text-xs font-black rounded-2xl flex items-center gap-2 hover:bg-slate-50 transition-all shadow-sm">
                         <FileDown className="w-4 h-4" /> Export DB
                     </button>
-                    <button className="h-12 px-6 bg-[var(--primary)] text-white text-xs font-black rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-indigo-500/20">
+                    <button 
+                        onClick={() => setIsEnrollModalOpen(true)}
+                        className="h-12 px-6 bg-[var(--primary)] text-white text-xs font-black rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-indigo-500/20"
+                    >
                         <Plus className="w-4 h-4" /> Enroll New
                     </button>
                 </div>
@@ -267,6 +289,14 @@ export default function StudentsPage() {
                     </p>
                 </div>
             </div>
+
+            {isEnrollModalOpen && (
+                <StudentModal 
+                    isOpen={isEnrollModalOpen}
+                    onClose={() => setIsEnrollModalOpen(false)}
+                    onSave={handleEnroll}
+                />
+            )}
         </div>
     );
 }
